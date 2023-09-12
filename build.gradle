@@ -1,0 +1,106 @@
+plugins {
+    id 'java'
+    id 'groovy'
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+    id 'org.sonatype.gradle.plugins.scan' version '2.6.0'
+}
+
+group = 'com.computinglaboratory'
+version = '0.1'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+    withJavadocJar()
+    withSourcesJar()
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok:1.18.28'
+    annotationProcessor 'org.projectlombok:lombok:1.18.28'
+
+    // Testing
+    testImplementation 'org.apache.groovy:groovy-all:4.0.13'
+    testImplementation 'org.spockframework:spock-core:2.4-M1-groovy-4.0'
+
+    // JUnit
+    testImplementation platform('org.junit:junit-bom:5.9.3')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "OSSRH"
+            url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            try {
+                credentials {
+                    username = "$mavenCentralUser"
+                    password = "$mavenCentralPassword"
+                }
+            } catch (Exception ex) {
+                credentials {
+                    username = " "
+                    password = " "
+                }
+            }
+        }
+    }
+    publications {
+
+        mavenJava(MavenPublication) {
+            artifactId = 'diskcooker'
+            from components.java
+            pom {
+                name = 'Disk Cooker'
+                description = 'Disk Cooker'
+                url = 'https://github.com/kamilszewc/diskcooker'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'kszewc'
+                        name = "Kamil Szewc"
+                        email = 'kamil.szewc@gmail.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/kamilszewc/diskcooker.git'
+                    developerConnection = 'scm:git:https://github.com/kamilszewc/diskcooker.git'
+                    url = 'https://github.com/kamilszewc/diskcooker.git'
+                }
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
+    sign configurations.archives
+}
+
+ossIndexAudit {
+    allConfigurations = false
+    useCache = false
+    outputFormat = 'DEFAULT'
+}

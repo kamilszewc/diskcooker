@@ -4,6 +4,8 @@ package com.computinglaboratory;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -16,6 +18,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DiskCooker {
+    private static final Logger log = LoggerFactory.getLogger(DiskCooker.class);
 
     @Builder.Default
     private Integer delay = 0;
@@ -31,6 +34,9 @@ public class DiskCooker {
 
     @Builder.Default
     private FileGenerator fileGenerator = new RandomTextFileGenerator();
+
+    @Builder.Default
+    private Boolean logging = false;
 
     /**
      * Method starts files generation in specified folder
@@ -50,6 +56,7 @@ public class DiskCooker {
      * @throws InterruptedException
      */
     public void cook(Path path, Collection<Path> generatedFilesPaths) throws IOException, InterruptedException {
+        if (logging) log.info("Start cooking");
         long startTime = System.currentTimeMillis();
         long generatedNumberOfFiles = 0;
         while(true) {
@@ -63,6 +70,7 @@ public class DiskCooker {
             Path generatedFilePath = path.resolve(filename);
 
             // Generate file
+            if (logging) log.info("Cooking file " + generatedFilePath);
             fileGenerator.generate(generatedFilePath);
 
             if (generatedFilesPaths != null) {
@@ -82,5 +90,6 @@ public class DiskCooker {
                 if (currentTime - startTime >= timeLimit) break;
             }
         }
+        if (logging) log.info("Finishing cooking");
     }
 }

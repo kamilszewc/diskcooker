@@ -18,6 +18,7 @@ class DiskCookerTest extends Specification {
                         .length(10)
                         .extension("txt")
                         .build())
+                .logging(true)
                 .build()
 
         when:

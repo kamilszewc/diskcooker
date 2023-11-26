@@ -1,4 +1,4 @@
-package com.computinglaboratory;
+package io.github.kamilszewc;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,12 +12,12 @@ import java.util.Collection;
 import java.util.Random;
 
 /**
- * RandomTextFileGenerator class
+ * RandomByteFileGenerator class
  */
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RandomTextFileGenerator implements FileGenerator {
+public class RandomByteFileGenerator implements FileGenerator {
 
     @Builder.Default
     private Integer size = 1024;
@@ -27,8 +27,10 @@ public class RandomTextFileGenerator implements FileGenerator {
 
     @Override
     public void generate(Path path) throws IOException {
-        String generatedString = seed == null ? RandomTextGenerator.generate(size) : RandomTextGenerator.generate(size, seed);
-        Files.writeString(path, generatedString, StandardOpenOption.CREATE);
+        Random random = seed == null ? new Random() : new Random(seed);
+        byte[] bytes = new byte[size];
+        random.nextBytes(bytes);
+        Files.write(path, bytes, StandardOpenOption.CREATE);
     }
 
     @Override

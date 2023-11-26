@@ -1,4 +1,4 @@
-package com.computinglaboratory;
+package io.github.kamilszewc;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,19 +9,25 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Collection;
-import java.util.Random;
 
+/**
+ * RandomTextFileGenerator class
+ */
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PredefinedTextFileGenerator implements FileGenerator {
+public class RandomTextFileGenerator implements FileGenerator {
 
     @Builder.Default
-    private String text = "";
+    private Integer size = 1024;
+
+    @Builder.Default
+    private Long seed = null;
 
     @Override
     public void generate(Path path) throws IOException {
-        Files.writeString(path, text, StandardOpenOption.CREATE);
+        String generatedString = seed == null ? RandomTextGenerator.generate(size) : RandomTextGenerator.generate(size, seed);
+        Files.writeString(path, generatedString, StandardOpenOption.CREATE);
     }
 
     @Override

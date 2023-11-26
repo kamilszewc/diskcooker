@@ -1,10 +1,8 @@
-package com.computinglaboratory;
+package io.github.kamilszewc;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-
-import java.util.Random;
 
 @Builder
 @AllArgsConstructor

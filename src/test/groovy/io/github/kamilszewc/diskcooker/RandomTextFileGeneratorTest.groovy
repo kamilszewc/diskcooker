@@ -1,4 +1,4 @@
-package io.github.kamilszewc
+package io.github.kamilszewc.diskcooker
 
 import spock.lang.Specification
 

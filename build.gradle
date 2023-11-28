@@ -8,7 +8,7 @@ plugins {
 }
 
 group = 'io.github.kamilszewc'
-version = '0.3'
+version = '0.4'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -24,8 +24,8 @@ repositories {
 dependencies {
 
     // Lombok
-    compileOnly 'org.projectlombok:lombok:1.18.28'
-    annotationProcessor 'org.projectlombok:lombok:1.18.28'
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
     // Testing
     testImplementation 'org.apache.groovy:groovy-all:4.0.15'
@@ -74,14 +74,6 @@ publishing {
                 name = 'Disk Cooker'
                 description = 'Disk Cooker'
                 url = 'https://github.com/kamilszewc/diskcooker'
-//                distributionManagement {
-//                    relocation {
-//                        groupId = 'io.github.kamilszewc'
-//                        artifactId = 'diskcooker'
-//                        version = '0.3'
-//                        message = 'Project moved to io.github.kamilszewc:diskcooker'
-//                    }
-//                }
                 licenses {
                     license {
                         name = 'The Apache License, Version 2.0'
